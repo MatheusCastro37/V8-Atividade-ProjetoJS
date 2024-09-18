@@ -75,14 +75,15 @@ function showClients(clients = []) {
     })
 
 };
+showClients(data_client);
 
 btn_filter.addEventListener('click', filterClients);
 
 function filterClients() {
 
-    const input_name_or_email = document.querySelector("#input-search").value;
-    const input_category = document.querySelector("#select-category").value;
-    const input_range_values = document.querySelector("#select-values").value;
+    const input_name_or_email = document.querySelector("#input-search").value.toLowerCase();
+    const input_category = document.querySelector("#select-category").value.toLowerCase();
+    const input_range_values = document.querySelector("#select-values").value.toLowerCase();
 
     const filtered_clients = data_client.filter(client => {
 
@@ -117,12 +118,12 @@ function filterClients() {
 
         } else if (input_range_values != '#') {
             return billing;
-            
+
+        } else {
+            return data_client;
         }
 
     })
 
     showClients(filtered_clients)
 }
-
-showClients(data_client)
