@@ -98,41 +98,31 @@ function filterClients() {
         (input_range_values == "10000" && client.billing >= 10000);
 
         if ((input_name_or_email != '' || input_name_or_email != '') && input_category != '#' && input_range_values != '#') {
-
             return (name || email) && category && billing;
 
         } else if ((input_name_or_email != '' || input_name_or_email != '') && input_category != '#') {
-
             return (name || email) && category;
 
         } else if ((input_name_or_email != '' || input_name_or_email != '') && input_range_values != '#') {
-
             return (name || email) && billing;
 
         } else if (input_category != '#' && input_range_values != '#') {
-
             return category && billing;
 
         } else if ((input_name_or_email != '')) {
-
             return (name || email);
 
         } else if (input_category != '#') {
-
             return category;
 
         } else if (input_range_values != '#') {
-
             return billing;
             
         }
 
-        //return name || email || category || billing;
-
     })
 
     showClients(filtered_clients)
-    // filtered_clients.length == 0 ? showClients(data_client) : showClients(filtered_clients);
 }
 
 showClients(data_client)
