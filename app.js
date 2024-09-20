@@ -91,8 +91,9 @@ function filterClients() {
         const name = input_name_or_email == name_lowercase;
         const email = input_name_or_email == email_lowercase;
         const category = input_category == category_lowercase;
-        let billing = clientBillingMapping[input_range_values];        
-        billing = billing();
+        let billing = clientBillingMapping[input_range_values];
+
+        input_range_values != '#' ? billing = billing() : null;
 
         if ((input_name_or_email != '' || input_name_or_email != '') && input_category != '#' && input_range_values != '#') {
             return (name || email) && category && billing;
