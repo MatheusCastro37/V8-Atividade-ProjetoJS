@@ -38,32 +38,22 @@ function showClients(clients = []) {
     tbody.innerHTML = '';
 
     clients.forEach(client => {
-        
+
         let client_billing = client.billing.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-        let style_client_category;
-    
-        switch (client.category) {
-            case "Recorrente":
-                style_client_category = "primary";
-                break;
-    
-            case "Avulso":
-                style_client_category = "warning";
-                break;
-    
-            case "Anual":
-                style_client_category = "info";
-                break;
-            default:
-                return;
-        }
+
+        /* mapeamento de tipo de estilos */
+        const clientTypeMapping = {
+            Recorrente: 'primary',
+            Avulso: 'warning',
+            Anual: 'info'
+        };
 
         tbody.innerHTML += `
             <tr>
                 <td>${client.name}</td>
                 <td>${client.email}</td>
                 <td>
-                    <span class="badge text-bg-${style_client_category}">${client.category}</span>
+                    <span class="badge text-bg-${clientTypeMapping[client.category]}">${client.category}</span>
                 </td>
                 <td>R$ ${client_billing}</td>
                 <td>
@@ -83,7 +73,7 @@ function filterClients() {
 
     const input_name_or_email = document.querySelector("#input-search").value.toLowerCase();
     const input_category = document.querySelector("#select-category").value.toLowerCase();
-    const input_range_values = document.querySelector("#select-values").value.toLowerCase();
+    const input_range_values = document.querySelector("#select-values").value;
 
     const filtered_clients = data_client.filter(client => {
 
@@ -91,12 +81,18 @@ function filterClients() {
         const email_lowercase = client.email.toLowerCase();
         const category_lowercase = client.category.toLowerCase();
 
+        /* mapeamento de tipo de estilos */
+        const clientBillingMapping = {
+            '2000': () => client.billing <= 2000,
+            '3000_5000': () => client.billing >= 3000 && client.billing <= 5000,
+            '10000': () => client.billing >= 10000
+        };
+
         const name = input_name_or_email == name_lowercase;
         const email = input_name_or_email == email_lowercase;
         const category = input_category == category_lowercase;
-        const billing = (input_range_values == "2000" && client.billing <= 2000) || 
-        (input_range_values == "3000_5000" && (client.billing >= 3000 && client.billing <= 5000)) ||
-        (input_range_values == "10000" && client.billing >= 10000);
+        let billing = clientBillingMapping[input_range_values];        
+        billing = billing();
 
         if ((input_name_or_email != '' || input_name_or_email != '') && input_category != '#' && input_range_values != '#') {
             return (name || email) && category && billing;
