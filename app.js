@@ -1,5 +1,6 @@
 const tbody = document.querySelector("tbody");
-const btn_filter = document.querySelector("#btn-filter")
+const btn_filter = document.querySelector("#btn-filter");
+const btn_clear_filter = document.querySelector("#btn-clear-filter");
 
 const data_client = [
     {
@@ -123,4 +124,23 @@ function filterClients() {
     })
 
     showClients(filtered_clients)
+}
+
+btn_clear_filter.addEventListener('click', clearFilter);
+
+function clearFilter() {
+    const input_name_or_email = document.querySelector("#input-search");
+    const input_category = document.querySelector("#select-category");
+    const input_range_values = document.querySelector("#select-values");
+
+    const clear_alert = document.querySelector("#clear-alert");
+
+    input_name_or_email.value = '';
+    input_category.value = '#';
+    input_range_values.value = '#';
+    clear_alert.textContent = 'Filtro Limpo!'
+
+    setInterval(() => clear_alert.textContent = '', 1500)
+
+    showClients(data_client)
 }
