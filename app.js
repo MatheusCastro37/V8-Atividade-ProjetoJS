@@ -140,7 +140,7 @@ function clearFilter() {
     input_range_values.value = '#';
     clear_alert.textContent = 'Filtro Limpo!'
 
-    setInterval(() => clear_alert.textContent = '', 1500)
+    setTimeout(() => clear_alert.textContent = '', 1500)
 
     showClients(data_client)
 }
