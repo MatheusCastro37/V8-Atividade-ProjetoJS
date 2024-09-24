@@ -1,4 +1,5 @@
-const tbody = document.querySelector("tbody");
+const div_card_body = document.querySelector('#table-clients');
+const node = document.createElement("table");
 const btn_filter = document.querySelector("#btn-filter");
 const btn_clear_filter = document.querySelector("#btn-clear-filter");
 
@@ -7,18 +8,43 @@ async function apiRequest() {
     try {
         const api_url = 'https://mocki.io/v1/d1e3eb2f-ec55-435e-afc0-2f4fac05f733';
         const request = await fetch(api_url);
-        const data = await request.json()
+        const data = await request.json();
         users = data.users;
         showClients(users);
     } catch (error) {
-        console.error(error)
+        div_card_body.firstElementChild.insertAdjacentHTML('afterend', `
+            <div class="alert alert-primary d-flex align-items-center justify-content-center icon-link mb-0" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>    
+            </svg>
+            <div>
+                Falha ao buscar as informações!
+            </div>
+            </div>    
+        `);
     }
 }
 
 apiRequest();
 
 function showClients(clients = []) {
-    tbody.innerHTML = ''
+    div_card_body.appendChild(node);
+    const table = document.querySelector("#table-clients > table");
+    table.classList.add('table')
+    table.innerHTML = `
+        <thead>
+            <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Tipo de cliente</th>
+            <th scope="col">Faturamento</th>
+            <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = '';
 
     clients.forEach(client => {
 
