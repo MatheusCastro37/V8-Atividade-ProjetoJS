@@ -2,41 +2,23 @@ const tbody = document.querySelector("tbody");
 const btn_filter = document.querySelector("#btn-filter");
 const btn_clear_filter = document.querySelector("#btn-clear-filter");
 
-const data_client = [
-    {
-        name: "Mark",
-        email: "Mark@teste.com",
-        category: "Recorrente",
-        billing: 2000,
-    },
-    {
-        name: "Otto",
-        email: "Otto@teste.com",
-        category: "Avulso",
-        billing: 4000,
-    },
-    {
-        name: "Keven",
-        email: "Keven@teste.com",
-        category: "Anual",
-        billing: 122000,
-    },
-    {
-        name: "Matheus",
-        email: "Matheus@teste.com",
-        category: "Anual",
-        billing: 50000,
-    },
-    {
-        name: "Henrique",
-        email: "Henrique@teste.com",
-        category: "Recorrente",
-        billing: 80000,
+let users;
+async function apiRequest() {
+    try {
+        const api_url = 'https://mocki.io/v1/d1e3eb2f-ec55-435e-afc0-2f4fac05f733';
+        const request = await fetch(api_url);
+        const data = await request.json()
+        users = data.users;
+        showClients(users);
+    } catch (error) {
+        console.error(error)
     }
-];
+}
+
+apiRequest();
 
 function showClients(clients = []) {
-    tbody.innerHTML = '';
+    tbody.innerHTML = ''
 
     clients.forEach(client => {
 
@@ -66,7 +48,6 @@ function showClients(clients = []) {
     })
 
 };
-showClients(data_client);
 
 btn_filter.addEventListener('click', filterClients);
 
@@ -76,13 +57,13 @@ function filterClients() {
     const input_category = document.querySelector("#select-category").value.toLowerCase();
     const input_range_values = document.querySelector("#select-values").value;
 
-    const filtered_clients = data_client.filter(client => {
+    const filtered_clients = users.filter(client => {
 
         const name_lowercase = client.name.toLowerCase();
         const email_lowercase = client.email.toLowerCase();
         const category_lowercase = client.category.toLowerCase();
 
-        /* mapeamento de tipo de estilos */
+        /* mapeamento de faturamento */
         const clientBillingMapping = {
             '2000': () => client.billing <= 2000,
             '3000_5000': () => client.billing >= 3000 && client.billing <= 5000,
@@ -118,7 +99,7 @@ function filterClients() {
             return billing;
 
         } else {
-            return data_client;
+            return users;
         }
 
     })
@@ -142,5 +123,5 @@ function clearFilter() {
 
     setTimeout(() => clear_alert.textContent = '', 1500)
 
-    showClients(data_client)
+    showClients(users)
 }
