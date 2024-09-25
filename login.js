@@ -14,7 +14,7 @@ function validateLogin() {
     const email_is_valid = validateEmail(input_email);
     const password_is_valid = validatePassword(input_password);
     
-    email_is_valid && password_is_valid ? showAlert('success') : showAlert('failed');
+    email_is_valid && password_is_valid ? showAlert({type:'success', message:'E-mail e Senha Válidos!'}) : showAlert({type:'warning', message:'E-mail e/ou Senha inválido(s)'});
 };
 
 function validateEmail(email) {
@@ -26,24 +26,38 @@ function validatePassword(password) {
     return user_login.password == password;
 };
 
-function showAlert(alert_type) {
+function showAlert({type, message, duration = 1800}) {
     const div_alert = document.querySelector("#alert-login");
-    const div_msg = document.querySelector("#alert-login div");
-    const use_svg = document.querySelector("svg > use");
 
+    // modifica o alert
+    modifyAlert(type, message);
+
+    // troca a classe mostrar o alerta
     div_alert.classList.replace("bottom", "top");
-
+    
+    // reverte a troca da classe para não mostrar o alerta
     setTimeout(() => {
         div_alert.classList.replace("top", "bottom");
-    }, 1800);
-
-    if(alert_type == 'success') {
-        div_alert.classList.replace("alert-warning", "alert-success");
-        use_svg.setAttribute("xlink:href", "#check-circle-fill");
-        div_msg.textContent = 'E-mail e Senha Válidos!';
-    } else {
-        div_alert.classList.replace("alert-success", "alert-warning");
-        use_svg.setAttribute("xlink:href", "#exclamation-triangle-fill");
-        div_msg.textContent = 'E-mail e/ou Senha inválido(s)';
-    };
+    }, duration);
 };
+
+function modifyAlert(type, message) {
+    // pega a div do alerta
+    const div_alert = document.querySelector("#alert-login");
+
+    // pega a div que contem a mensagem do alerta
+    const div_msg = document.querySelector("#alert-login div");
+
+    // pega o icone svg do alerta
+    const use_svg = document.querySelector("svg > use");
+
+    if(type == 'success') {
+        div_alert.classList.replace("alert-warning", `alert-${type}`);
+        use_svg.setAttribute("xlink:href", "#check-circle-fill");
+        div_msg.textContent = message;
+    } else {
+        div_alert.classList.replace("alert-success", `alert-${type}`);
+        use_svg.setAttribute("xlink:href", "#exclamation-triangle-fill");
+        div_msg.textContent = message;
+    };
+}
