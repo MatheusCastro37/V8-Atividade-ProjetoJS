@@ -9,15 +9,21 @@ btn_login.addEventListener("click" , validateLogin);
 
 function validateLogin() {
     const input_email = document.querySelector("#input-email").value.toLowerCase();
-    const input_password = Number(document.querySelector("#input-password").value);
+    const input_password = document.querySelector("#input-password").value;
 
-    if(input_email === user_login.email && input_password === user_login.password) {
-        showAlert('success');
-        // return alert("E-mail e Senha válidos!")
-    } else {
-        showAlert('failed');
-        // alert("E-mail e/ou Senha inválido(s)!")
-    }
+    const email_is_valid = validateEmail(input_email);
+    const password_is_valid = validatePassword(input_password);
+    
+    email_is_valid && password_is_valid ? showAlert('success') : showAlert('failed');
+};
+
+function validateEmail(email) {
+    const regex_email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex_email.test(email) && user_login.email == email;
+};
+
+function validatePassword(password) {
+    return user_login.password == password;
 };
 
 function showAlert(alert_type) {
