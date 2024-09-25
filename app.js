@@ -1,3 +1,7 @@
+if(!localStorage.getItem("AuthToken")){
+    window.open("./login.html", "_self");
+}
+
 const div_card_body = document.querySelector('#table-clients');
 const node = document.createElement("table");
 const btn_filter = document.querySelector("#btn-filter");

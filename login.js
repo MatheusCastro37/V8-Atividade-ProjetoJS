@@ -14,7 +14,13 @@ function validateLogin() {
     const email_is_valid = validateEmail(input_email);
     const password_is_valid = validatePassword(input_password);
     
-    email_is_valid && password_is_valid ? showAlert({type:'success', message:'E-mail e Senha Válidos!'}) : showAlert({type:'warning', message:'E-mail e/ou Senha inválido(s)'});
+    if(email_is_valid && password_is_valid) {
+        showAlert({type:'success', message:'E-mail e Senha Válidos!'});
+        localStorage.setItem("AuthToken", true)
+        setTimeout(() => window.open("./index.html", "_self"), 2000);
+    } else {
+        showAlert({type:'warning', message:'E-mail e/ou Senha inválido(s)'});
+    }
 };
 
 function validateEmail(email) {
